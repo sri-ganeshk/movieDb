@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
+import { useFavoritesStore } from './useFavoritesStore';
 
 interface User {
   id: string;
@@ -55,7 +56,6 @@ export const useAuthStore = create<AuthState>((set) => ({
       await axios.post('/api/auth/logout');
       set({ user: null, isAuthenticated: false });
       // Clear favorites so the next user doesn't see stale data
-      const { useFavoritesStore } = await import('./useFavoritesStore');
       useFavoritesStore.setState({ favorites: [], favoriteIds: [] });
     } catch (error) {
       console.error('Logout failed:', error);
