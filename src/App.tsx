@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import './App.css';
 import AppBar from './components/AppBar';
 import Home from './components/Home';
@@ -45,6 +46,19 @@ function App() {
   return (
     <div>
       <BrowserRouter>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            style: {
+              background: '#1f1f1f',
+              color: '#fff',
+              border: '1px solid #3f3f46',
+              borderRadius: '12px',
+            },
+            success: { iconTheme: { primary: '#ec4899', secondary: '#fff' } },
+            error: { iconTheme: { primary: '#ef4444', secondary: '#fff' } },
+          }}
+        />
         <AppBar />
         <Routes>
           <Route path="/" element={<Home />} />

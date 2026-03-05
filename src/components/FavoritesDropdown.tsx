@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useFavoritesStore } from '../store/useFavoritesStore';
+import toast from 'react-hot-toast';
 
 const FavoritesPage = () => {
   const { favorites, isLoading, error, fetchFavorites, removeFavorite } = useFavoritesStore();
@@ -9,24 +10,32 @@ const FavoritesPage = () => {
     fetchFavorites();
   }, [fetchFavorites]);
 
+  // Show toast when fetch error occurs
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
+
   const ratingColor = (score: number) => {
     if (score >= 7) return 'bg-green-600';
     if (score >= 5) return 'bg-yellow-600';
     return 'bg-red-600';
   };
 
+  const handleRemove = async (movieId: number) => {
+    try {
+      await removeFavorite(movieId);
+      toast.success('Removed from favorites');
+    } catch (err) {
+      toast.error('Failed to remove favorite.');
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-white text-2xl animate-pulse">Loading your favorites...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-red-400 text-xl text-center px-6">{error}</div>
       </div>
     );
   }
@@ -87,7 +96,7 @@ const FavoritesPage = () => {
 
               {/* Remove from Favorites Button (visible on hover) */}
               <button
-                onClick={() => removeFavorite(movie.id)}
+                onClick={() => handleRemove(movie.id)}
                 title="Remove from favorites"
                 className="absolute top-2 left-2 bg-black/60 hover:bg-red-600 text-white p-1.5 rounded-full transition opacity-0 group-hover:opacity-100"
               >

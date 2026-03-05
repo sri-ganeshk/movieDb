@@ -11,32 +11,6 @@ interface Movie {
   overview: string;
 }
 
-interface MovieDetails extends Movie {
-    genres: { id: number; name: string }[];
-    runtime: number;
-    tagline: string;
-}
-
-interface CastMember {
-    id: number;
-    name: string;
-    profile_path: string;
-    character: string;
-}
-
-interface CrewMember {
-    id: number;
-    name: string;
-    profile_path: string;
-    job: string;
-}
-
-interface Review {
-    id: string;
-    author: string;
-    content: string;
-    created_at: string;
-}
 
 interface MovieStore {
   // Search State
@@ -58,15 +32,6 @@ interface MovieStore {
   fetchTopRatedMovies: (page?: number) => Promise<void>;
   fetchUpcomingMovies: (page?: number) => Promise<void>;
   fetchPopularMovies: (page?: number) => Promise<void>;
-
-  // Movie Details State
-  movieDetails: MovieDetails | null;
-  movieCast: CastMember[];
-  movieCrew: CrewMember[];
-  movieRecommendations: Movie[];
-  movieReviews: Review[];
-  
-  fetchMovieDetails: (id: number) => Promise<void>;
 }
 
 // Ensure your backend proxy URL is correct (e.g., localhost during dev, or standard /api pattern)
@@ -143,46 +108,5 @@ export const useMovieStore = create<MovieStore>((set, get) => ({
       console.error("Error fetching popular movies:", err);
     }
   },
-
-  // --- Movie Details ---
-  movieDetails: null,
-  movieCast: [],
-  movieCrew: [],
-  movieRecommendations: [],
-  movieReviews: [],
-
-  fetchMovieDetails: async (id: number) => {
-    try {
-      // Fetch main details
-      const detailsRes = await axios.get(TMDB_PROXY, {
-          params: { endpoint: `movie/${id}` }
-      });
-      set({ movieDetails: detailsRes.data });
-
-      // Fetch credits (cast/crew)
-      const creditsRes = await axios.get(TMDB_PROXY, {
-          params: { endpoint: `movie/${id}/credits` }
-      });
-      set({ 
-          movieCast: creditsRes.data.cast || [],
-          movieCrew: creditsRes.data.crew || []
-      });
-
-      // Fetch recommendations
-      const recsRes = await axios.get(TMDB_PROXY, {
-          params: { endpoint: `movie/${id}/recommendations` }
-      });
-      set({ movieRecommendations: recsRes.data.results || [] });
-
-      // Fetch reviews
-      const reviewsRes = await axios.get(TMDB_PROXY, {
-          params: { endpoint: `movie/${id}/reviews` }
-      });
-      set({ movieReviews: reviewsRes.data.results || [] });
-
-    } catch (err) {
-      console.error("Error fetching movie details:", err);
-    }
-  }
 
 }));

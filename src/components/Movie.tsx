@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuthStore } from '../store/useAuthStore';
 import { useFavoritesStore } from '../store/useFavoritesStore';
+import toast from 'react-hot-toast';
 
 interface MovieDetails {
   title: string;
@@ -69,6 +70,7 @@ const Movie = () => {
         setReviews(reviewsRes.data.results || []);
       } catch (err) {
         console.error('Error fetching movie details:', err);
+        toast.error('Failed to load movie details. Please try again.');
       }
     };
     fetchMovieDetails();
@@ -83,11 +85,13 @@ const Movie = () => {
     try {
       if (isMovieFavorite) {
         await removeFavorite(movieId);
+        toast.success('Removed from favorites');
       } else {
         await addFavorite(movieId);
+        toast.success('Added to favorites ❤️');
       }
     } catch (err) {
-      alert(typeof err === 'string' ? err : 'Error updating favorites.');
+      toast.error(typeof err === 'string' ? err : 'Error updating favorites.');
     } finally {
       setFavoriteLoading(false);
     }

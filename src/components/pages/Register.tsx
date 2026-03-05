@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useNavigate, Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -8,18 +9,17 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const { register } = useAuthStore();
   const navigate = useNavigate();
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
     try {
       await register({ name, email, password });
+      toast.success('Account created! Welcome to FilmSphere 🎬');
       navigate('/');
     } catch (err: any) {
-      setError(err);
+      toast.error(typeof err === 'string' ? err : 'Registration failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -29,7 +29,6 @@ const Register = () => {
     <div className="min-h-screen flex items-center justify-center bg-zinc-900 pt-20">
       <div className="bg-zinc-800 p-8 rounded-xl shadow-xl max-w-md w-full border border-zinc-700">
         <h2 className="text-3xl font-bold text-white mb-6 text-center">Create Account</h2>
-        {error && <div className="bg-red-500/10 border border-red-500 text-red-500 p-3 rounded mb-4">{error}</div>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-zinc-400 mb-1">Name</label>

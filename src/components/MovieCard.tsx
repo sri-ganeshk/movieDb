@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/useAuthStore';
 import { useFavoritesStore } from '../store/useFavoritesStore';
+import toast from 'react-hot-toast';
 
 const MovieCard = ({ movie }: any) => {
   const { isAuthenticated } = useAuthStore();
@@ -19,11 +20,13 @@ const MovieCard = ({ movie }: any) => {
     try {
       if (isMovieFavorite) {
         await removeFavorite(movie.id);
+        toast.success('Removed from favorites');
       } else {
         await addFavorite(movie.id);
+        toast.success('Added to favorites ❤️');
       }
     } catch (err) {
-      alert(typeof err === 'string' ? err : 'Error updating favorites.');
+      toast.error(typeof err === 'string' ? err : 'Error updating favorites.');
     }
   };
 
@@ -54,12 +57,7 @@ const MovieCard = ({ movie }: any) => {
           isMovieFavorite ? 'bg-red-500 hover:bg-red-600' : 'bg-gray-500 hover:bg-red-600'
         }`}
       >
-        <svg
-          fill="currentColor"
-          viewBox="0 0 24 24"
-          height="1em"
-          width="1em"
-        >
+        <svg fill="currentColor" viewBox="0 0 24 24" height="1em" width="1em">
           <path d="M12 4.248c-3.148-5.402-12-3.735-12 2.944 0 4.713 5.373 7.431 12 15.048 6.627-7.617 12-10.335 12-15.048 0-6.679-8.852-8.346-12-2.944z" />
         </svg>
       </button>

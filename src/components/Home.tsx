@@ -69,7 +69,7 @@ function Home() {
                 ))}
                 {/* "See More" button */}
                 <Link to="/movies/upcoming-movies" className="flex-shrink-0">
-                  <button className="text-white to-purple-600 hover:from-blue-700 hover:to-purple-800 font-bold py-2 px-6 rounded-full shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-105">
+                  <button className="text-white bg-zinc-800 hover:bg-zinc-700 font-bold py-2 px-6 rounded-full shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-105">
                     See More
                   </button>
                 </Link>
@@ -89,7 +89,7 @@ function Home() {
                 ))}
                 {/* "See More" button */}
                 <Link to="/movies/top-rated" className="flex-shrink-0">
-                  <button className="text-white hover:from-blue-700 hover:to-purple-800 font-bold py-2 px-6 rounded-full shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-105">
+                  <button className="text-white bg-zinc-800 hover:bg-zinc-700 font-bold py-2 px-6 rounded-full shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-105">
                     See More
                   </button>
                 </Link>
@@ -109,7 +109,7 @@ function Home() {
                 ))}
                 {/* "See More" button */}
                 <Link to="/movies/popular" className="flex-shrink-0">
-                  <button className="text-white hover:from-blue-700 hover:to-purple-800 font-bold py-2 px-6 rounded-full shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-105">
+                  <button className="text-white bg-zinc-800 hover:bg-zinc-700 font-bold py-2 px-6 rounded-full shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-105">
                     See More
                   </button>
                 </Link>

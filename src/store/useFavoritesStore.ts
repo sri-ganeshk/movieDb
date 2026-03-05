@@ -55,9 +55,12 @@ export const useFavoritesStore = create<FavoritesState>((set, get) => ({
   addFavorite: async (movieId: number) => {
     try {
       await axios.post('/api/favorites', { movieId: [movieId] });
-      set((state) => ({ favoriteIds: [...state.favoriteIds, movieId] }));
-      // Re-fetch to get the movie details for the new entry
-      await get().fetchFavorites();
+      // Optimistically fetch only the newly added movie's details
+      const res = await axios.get('/api/tmdb', { params: { endpoint: `movie/${movieId}` } });
+      set((state) => ({
+        favorites: [...state.favorites, res.data],
+        favoriteIds: [...state.favoriteIds, movieId],
+      }));
     } catch (err: any) {
       console.error('Error adding favorite:', err);
       throw err.response?.data?.message || 'Failed to add favorite.';
